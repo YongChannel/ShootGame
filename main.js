@@ -33,16 +33,46 @@ function loadImage() {
     spaceshipImage.src = "images/spaceshipImage.png";
 };
 
+let keysDown = {}
+function setupKeyboardListener() {
+    document.addEventListener("keydown", function(event) {
+        keysDown[event.keyCode] = true;
+    });
+
+    document.addEventListener("keyup", function(event) {
+        delete keysDown[event.keyCode];
+    });
+};
+
+function update() {
+    if (39 in keysDown) {
+        spaceshipX += 1;
+    };
+
+    if (37 in keysDown) {
+        spaceshipX -= 1;
+    };
+
+    if (spaceshipX <= 0) {
+        spaceshipX = 0;
+    };
+
+    if (spaceshipX >= canvas.width - 58) {
+        spaceshipX = canvas.width - 58;
+    };
+};
+
 function render() {
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(spaceshipImage, spaceshipX, spaceshipY);
 };
 
 function main() {
+    update();
     render();
-    console.log("test");
     requestAnimationFrame(main);
 };
 
 loadImage();
+setupKeyboardListener();
 main();
